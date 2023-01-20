@@ -41,12 +41,16 @@ app.get('/pokemon/new', (req,res) =>{
     res.render('New')
 })
 // Delete - Delete this one record
-
+app.delete('/pokemon/:id', (req, res) => {
+    Pokemon.findByIdAndRemove(req.params.id, (err, data) => {
+      res.redirect('/pokemon') // redirect back to pokemon index
+    })
+  })
 // Update - Modifying a record
 
 // Create - send the filled form to db and create a new record
 app.post('/pokemon', (req,res) => {
-    pokemon.create(req.body, (error, createdPokemon) => {
+    Pokemon.create(req.body, (error, createdPokemon) => {
         res.redirect('/pokemon')
     })
     
@@ -54,11 +58,16 @@ app.post('/pokemon', (req,res) => {
 // Edit - Get the form with the record to update
 
 // Show route - Show me a particular record
-app.get('/pokemon/:indexOfPokemonArray', function(req, res){
-    pokemon.findById(req.params.indexOfPokemonArray, (err, foundPokemon)=> {
+app.get('/pokemon/:id', (req, res)=> {
+    Pokemon.findById(req.params.id, (err, foundPokemon)=> {
         res.render('Show', {
             pokemon: foundPokemon
         })
+    })
+})
+app.get('/pokemon/:id', (err, foundPokemon)=> {
+    res.render('Show', {
+        pokemon: foundPokemon
     })
 })
 // THIS CODE WAS TO CONNECT TO MONGO DB; NO LONGER NEEDED.
